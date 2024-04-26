@@ -72,7 +72,6 @@ def newOrder(request):
 
     serializer = OrderSerializer(data=json.loads(request.body))
     if serializer.is_valid():
-        serializer.save()
         json_data = json.loads(request.body)
         created_at = timezone.now()
         last_guide = Order.objects.all().order_by('id').last()
