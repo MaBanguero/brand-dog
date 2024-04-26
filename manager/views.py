@@ -84,8 +84,6 @@ def newOrder(request):
         city = json_data["city"]
         price = calculatePrice(city)
         serializer.status = 'pending'
-        serializer.delivery_company = assignDeliveryCompany(city)
-        print(type(serializer.delivery_company))
         order = Order.objects.create(
             email= serializer["email"],
             customer_name = serializer["customer_name"],
