@@ -11,7 +11,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import Order, DeliveryCompany, Task, Distributor, Fee
-from .serializer import UserSerializer, OrderSerializer, DistributorSerializer, GetOrderSerializer, GetDistributorSerializer, DeliveryCompanySerializer, GetDeliveryCompanySerializer
+from .serializer import UserSerializer, OrderSerializer, DistributorSerializer, GetOrderSerializer, GetDistributorSerializer, DeliveryCompanySerializer, GetDeliveryCompanySerializer, FeeSerializer, GetFeeSerializer
 from rest_framework.renderers import JSONRenderer
 import json
 import requests
@@ -272,6 +272,46 @@ def getDistributor(request, company_id):
             'data': {
                 'distributor': serializer.data
             }
+    })
+
+@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def createFee(request):
+    data = json.loads(request.body)
+    serializer =  FeeSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        fee = Fee(**serializer.data)
+        fee.save()
+        return JsonResponse({
+            'message':'Fee Created',
+            'data': {
+                'company_name': data['city'],
+                'id': fee.id
+            }
+    })
+    else:
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getFee(request, city):
+    if city:
+        fee = Fee.objects.filter(city=city)
+        serializer = FeeSerializer(fee)
+    else:
+        fee = Fee.objects.all()
+        serializer = FeeSerializer(fee, many=True)
+        
+    data = serializer.data
+
+    return JsonResponse({
+        'message':'Ok',
+        'data': data
     })
 
 def calculatePrice(city):

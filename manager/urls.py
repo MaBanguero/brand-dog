@@ -15,5 +15,7 @@ urlpatterns = [
     path('V1/user/login', views.login, name="login"),
     path('V1/deliverycompany/create', views.createDeliveryCompany, name="createDeliveryCompany"),
     path('V1/deliverycompany/<int:delivery_company_id>', views.getDeliveryCompany, name="getDeliveryCompany"),
+    path('V1/fee/create', views.createFee, name="createFee"),
+    path('V1/fee/<str:city>', views.getFee, name="getFee"),
 
 ]

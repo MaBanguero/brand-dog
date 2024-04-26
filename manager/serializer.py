@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Order, Distributor, Task, DeliveryCompany
+from .models import Order, Distributor, Task, DeliveryCompany, Fee
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,3 +41,15 @@ class GetDeliveryCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = DeliveryCompany
         fields = ['id','company_name', 'city']
+
+
+class FeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fee
+        fields = ['price', 'city']
+
+
+class GetFeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fee
+        fields = ['id','price', 'city']
