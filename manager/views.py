@@ -327,7 +327,7 @@ def getFee(request, city):
     })
 
 def calculatePrice(city):
-    return Fee.objects.get(city=city.lower()).price
+    return Fee.objects.get(city=city.lower())[0].price
 
 
 def sendMessage(message, telephone):
