@@ -335,7 +335,7 @@ def sendMessage(message, telephone):
         "message": message,
         "telephone": telephone
     }
-    
+    print(message + " " + telephone)
     # Send GET request to the external API
     json_data = json.dumps(data)
 
