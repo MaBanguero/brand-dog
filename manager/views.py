@@ -194,7 +194,8 @@ def assignDistributor(request):
     task.save()
     order.status = 'assigned'
     order.save()
-    sendMessage('Se te ha asignado una orden', distributor.telephone)
+    mensaje = 'Se te ha asignado una orden ID {} Responde RECOGIDA para confirmar que haz recogido la orden '.format(json_data['orderId'])
+    sendMessage(mensaje, distributor.telephone)
     return JsonResponse({
             'message':'Order Assigned',
             'data': {
