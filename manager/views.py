@@ -11,7 +11,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import Order, DeliveryCompany, Task, Distributor, Fee
-from .serializer import UserSerializer, OrderSerializer, DistributorSerializer, GetOrderSerializer, GetDistributorSerializer
+from .serializer import UserSerializer, OrderSerializer, DistributorSerializer, GetOrderSerializer, GetDistributorSerializer, DeliveryCompanySerializer, GetDeliveryCompanySerializer
 from rest_framework.renderers import JSONRenderer
 import json
 import requests
@@ -216,6 +216,47 @@ def createDistributor(request):
     })
     else:
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def createDeliveryCompany(request):
+    data = json.loads(request.body)
+    serializer =  DeliveryCompanySerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        deliveryCompany = DeliveryCompany(**serializer.data)
+        deliveryCompany.save()
+        return JsonResponse({
+            'message':'Delivery Company Created',
+            'data': {
+                'company_name': data['company_name'],
+                'id': deliveryCompany.id
+            }
+    })
+    else:
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getDeliveryCompany(request, delivery_company_id=""):
+    
+    if delivery_company_id:
+        deliveryCompany = DeliveryCompany.objects.get(pk=delivery_company_id)
+        serializer = GetDeliveryCompanySerializer(deliveryCompany)
+    else:
+        order = DeliveryCompany.objects.all()
+        serializer = GetDeliveryCompanySerializer(order, many=True)
+        
+    data = serializer.data
+
+    return JsonResponse({
+        'message':'Ok',
+        'data': data
+    })
 
 
 @csrf_exempt
