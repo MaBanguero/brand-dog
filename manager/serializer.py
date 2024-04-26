@@ -12,7 +12,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['email', 'customer_name', 'city', 'customer_address_2', 'customer_address',
-                  'provider_address_2','provider_address',
+                  'provider_address_2','provider_address','provider_name',
                   'guide','price','status','buyer_platform', 'delivery_company']
 
 class GetOrderSerializer(serializers.ModelSerializer):

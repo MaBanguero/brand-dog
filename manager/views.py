@@ -74,19 +74,34 @@ def newOrder(request):
     if serializer.is_valid():
         serializer.save()
         json_data = json.loads(request.body)
-        json_data['created_at'] = timezone.now()
+        created_at = timezone.now()
         last_guide = Order.objects.all().order_by('id').last()
         
         if last_guide:
-            json_data['guide'] = last_guide.guide + 1
+            guide = last_guide.guide + 1
         else:
-            json_data['guide'] = 1000000
+            guide = 1000000
         city = json_data["city"]
-        json_data['price'] = calculatePrice(city)
-        json_data['delivery_company'] =  assignDeliveryCompany(city)
-        json_data['status'] = 'pending'
-        print(json_data['created_at'])
-        order = Order.objects.create(**json_data)
+        price = calculatePrice(city)
+        serializer.status = 'pending'
+        serializer.delivery_company = assignDeliveryCompany(city)
+        print(type(serializer.delivery_company))
+        order = Order.objects.create(
+            email= serializer["email"],
+            customer_name = serializer["customer_name"],
+            provider_name = serializer["provider_name"],
+            city = serializer["city"],
+            customer_address_2 = serializer["customer_address_2"],
+            customer_address = serializer["customer_address"],
+            provider_address_2 = serializer["provider_address_2"],
+            provider_address = serializer["provider_address"],
+            created_at = created_at,
+            guide= guide,
+            price= price, 
+            status= serializer["status"],
+            buyer_platform= 'DROPI',
+            delivery_company= assignDeliveryCompany(city)[0]
+        )
         order.save()
         
         return JsonResponse({
