@@ -97,7 +97,7 @@ def newOrder(request):
             price= price, 
             status= serializer["status"],
             buyer_platform= 'DROPI',
-            delivery_company= assignDeliveryCompany(city)[0]
+            delivery_company= assignDeliveryCompany(city)
         )
         order.save()
         
@@ -179,7 +179,7 @@ def updateOrder(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 def assignDeliveryCompany(city):
-    company =  DeliveryCompany.objects.filter(city=city)
+    company =  DeliveryCompany.objects.filter(city=city)[0]
     return company
 
 @csrf_exempt
@@ -330,7 +330,7 @@ def calculatePrice(city):
 
 
 def sendMessage(message, telephone):
-    url = 'http://127.0.0.1:3002/sendmessage'
+    url = 'http://149.50.139.227:3002/sendmessage'
     data= {
         "message": message,
         "telephone": telephone
