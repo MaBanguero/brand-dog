@@ -294,7 +294,6 @@ def createFee(request):
     data = json.loads(request.body)
     serializer =  FeeSerializer(data=data)
     if serializer.is_valid():
-        serializer.save()
         fee = Fee(**serializer.data)
         fee.save()
         return JsonResponse({
