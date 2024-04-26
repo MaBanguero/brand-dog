@@ -167,7 +167,7 @@ def updateOrder(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 def assignDeliveryCompany(city):
-    company =  DeliveryCompany.objects.get(city=city)
+    company =  DeliveryCompany.objects.filter(city=city)
     return company
 
 @csrf_exempt
