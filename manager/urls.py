@@ -11,6 +11,7 @@ urlpatterns = [
     path("V1/orders/<int:order_id>", views.getOrder, name="getOrders"),
     path("V1/orders/", views.getOrder, name="getOrder"),
     path("V1/orders/update", views.updateOrder, name="updateOrder"),
+    path("V1/orders/changestatus", views.changeOrderStatus, name="changeOrderStatus"),
     path('V1/user/create', views.register, name="register"),
     path('V1/user/login', views.login, name="login"),
     path('V1/deliverycompany/create', views.createDeliveryCompany, name="createDeliveryCompany"),

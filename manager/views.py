@@ -148,7 +148,6 @@ def getOrder(request, order_id=""):
     })
 
 @csrf_exempt
-@require_http_methods('PATCH')
 @csrf_exempt
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
@@ -161,7 +160,7 @@ def updateOrder(request):
             return JsonResponse({
             'message':'Order can not be updated',
             'data': {}
-        })
+            })
         for key, value in data.items():
             if not key == 'guide' or key == 'status':  
                 setattr(order, key, value)
@@ -177,6 +176,31 @@ def updateOrder(request):
         return JsonResponse({'error': 'Order not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt
+@csrf_exempt
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def changeOrderStatus(request):
+    data = json.loads(request.body)
+    order = get_object_or_404(Order, id=data['order_id'])
+    distributor = get_object_or_404(Distributor, telephone=data['telephone'])
+    get_object_or_404(Task, order= order, distributor=distributor)
+
+    if data['action'] == 'recogida':
+        order.status = 'Picked up'
+    elif data['action'] == 'entregada':
+        order.status = 'Delivered'
+    elif data['action'] == 'entrega sin exito':
+        order.status = 'Not Delivered'
+
+    order.save()
+    return JsonResponse({
+            'message':'Order updated',
+            'data': {}
+    })
+    
 
 def assignDeliveryCompany(city):
     company =  DeliveryCompany.objects.filter(city=city)[0]
