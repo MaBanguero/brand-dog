@@ -180,8 +180,6 @@ def updateOrder(request):
 @csrf_exempt
 @csrf_exempt
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 def changeOrderStatus(request):
     data = json.loads(request.body)
     order = get_object_or_404(Order, id=data['order_id'])
