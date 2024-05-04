@@ -187,8 +187,9 @@ def changeOrderStatus(request):
     order = get_object_or_404(Order, id=data['order_id'])
     distributor = get_object_or_404(Distributor, telephone=data['telephone'])
     get_object_or_404(Task, order= order, distributor=distributor)
-
+    print('action {}'.format(data['action']))
     if data['action'] == 'recogida':
+        print('action 2 {}'.format(data['action']))
         order.status = 'Picked up'
     elif data['action'] == 'entregada':
         order.status = 'Delivered'
