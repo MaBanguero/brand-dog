@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=ni3rdx#%!f%^+mb3+1d)))*og1$1#g_^gbh8ob&rn9c729n7(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.221.153.229','190.242.181.54','181.54.0.200']
 
 
 # Application definition
@@ -143,5 +143,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://localhost:5173',
     'http://127.0.0.1:8000',
-    'https://dark.sunset-388418.postman.co'
+    'http://18.221.153.229:80',
+    'http://18.221.153.229:8000',
+    'https://dark.sunset-388418.postman.co',
+    'https://web.postman.co'
+
 ]
